@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #070514;
+  color: #f1f5f9;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.font-cinzel {
+  font-family: 'Playfair Display', 'Plus Jakarta Sans', Georgia, serif;
+  letter-spacing: 0.015em;
+  font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Glassmorphism custom classes */
+.glass-card {
+  background: rgba(19, 14, 46, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 12px 40px -10px rgba(147, 51, 234, 0.35);
+}
+
+.glass-nav {
+  background: rgba(10, 7, 30, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+/* Cosmic glow effects */
+.cosmic-glow-purple {
+  box-shadow: 0 0 25px -3px rgba(168, 85, 247, 0.45);
+}
+
+.cosmic-glow-gold {
+  box-shadow: 0 0 25px -3px rgba(245, 158, 11, 0.45);
+}
+
+.cosmic-glow-cyan {
+  box-shadow: 0 0 25px -3px rgba(6, 182, 212, 0.45);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #070514;
+}
+::-webkit-scrollbar-thumb {
+  background: #3b2d71;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+/* Paywall blurred text */
+.blur-paywall {
+  filter: blur(7px);
+  user-select: none;
+  pointer-events: none;
+}
