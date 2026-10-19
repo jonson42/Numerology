@@ -3,6 +3,8 @@ using Numerology.Domain.Entities;
 using Numerology.Domain.Enums;
 using Numerology.Infrastructure.Persistence;
 
+using Numerology.Application.Common;
+
 namespace Numerology.Infrastructure.Seeders;
 
 public static class DatabaseSeeder
@@ -11,28 +13,32 @@ public static class DatabaseSeeder
     {
         await context.Database.EnsureCreatedAsync();
 
+        // Tự động bổ sung cột Username và PasswordHash nếu dùng DB cũ chưa có migration
+        try { await context.Database.ExecuteSqlRawAsync("ALTER TABLE Users ADD COLUMN Username TEXT;"); } catch { }
+        try { await context.Database.ExecuteSqlRawAsync("ALTER TABLE Users ADD COLUMN PasswordHash TEXT;"); } catch { }
+
         // 1. Seed Users
         if (!await context.Users.AnyAsync())
         {
             var admin = new UserAccount
             {
+                Username = "admin",
+                PasswordHash = PasswordHelper.HashPassword("admin123"),
                 PhoneNumber = "0988888888",
                 FullName = "Quản Trị Viên Hệ Thống",
                 Role = "Admin",
                 IsVip = true,
                 VipExpireAt = DateTime.UtcNow.AddYears(10),
-                OtpCode = "123456",
-                OtpExpiredAt = DateTime.UtcNow.AddYears(1)
             };
 
             var testUser = new UserAccount
             {
+                Username = "nguyenvanan",
+                PasswordHash = PasswordHelper.HashPassword("123456"),
                 PhoneNumber = "0912345678",
                 FullName = "Nguyễn Văn An",
                 Role = "User",
                 IsVip = false,
-                OtpCode = "123456",
-                OtpExpiredAt = DateTime.UtcNow.AddYears(1)
             };
 
             context.Users.AddRange(admin, testUser);

@@ -1,6 +1,7 @@
 export interface UserAccountDto {
   id: string;
-  phoneNumber: string;
+  username?: string;
+  phoneNumber?: string;
   fullName?: string;
   role: string;
   isVip: boolean;

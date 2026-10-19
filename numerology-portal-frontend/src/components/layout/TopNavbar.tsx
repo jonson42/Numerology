@@ -104,7 +104,7 @@ export const TopNavbar: React.FC<Props> = ({
               <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
                 <div className="text-right">
                   <span className="text-xs font-semibold text-slate-200 block">
-                    {currentUser.fullName || currentUser.phoneNumber}
+                    {currentUser.fullName || currentUser.username || currentUser.phoneNumber}
                   </span>
                   <span className="text-[10px] text-amber-400 font-mono block">
                     {currentUser.isVip ? '★ Thành viên VIP' : 'Thành viên thường'}
@@ -188,7 +188,7 @@ export const TopNavbar: React.FC<Props> = ({
                 onClick={onLogout}
                 className="text-xs text-rose-400 font-semibold"
               >
-                Đăng Xuất ({currentUser.phoneNumber})
+                Đăng Xuất ({currentUser.fullName || currentUser.username || currentUser.phoneNumber})
               </button>
             ) : (
               <button
@@ -198,7 +198,7 @@ export const TopNavbar: React.FC<Props> = ({
                 }}
                 className="text-xs text-purple-400 font-semibold"
               >
-                Đăng Nhập SĐT
+                Đăng Nhập / Đăng Ký
               </button>
             )}
           </div>

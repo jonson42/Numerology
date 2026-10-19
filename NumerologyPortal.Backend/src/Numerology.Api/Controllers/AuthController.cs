@@ -8,6 +8,8 @@ using Numerology.Application.Features.Dtos;
 using Numerology.Domain.Entities;
 using Numerology.Infrastructure.Persistence;
 
+using Numerology.Application.Common;
+
 namespace Numerology.Api.Controllers;
 
 [ApiController]
@@ -21,6 +23,126 @@ public class AuthController : ControllerBase
     {
         _dbContext = dbContext;
         _tokenGenerator = tokenGenerator;
+    }
+
+    /// <summary>
+    /// Đăng nhập tài khoản bằng Tên đăng nhập / Số điện thoại và Mật khẩu
+    /// </summary>
+    [HttpPost("login")]
+    public async Task<ActionResult<Result<AuthResponseDto>>> Login([FromBody] LoginRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest(Result<AuthResponseDto>.Fail("Vui lòng nhập tên đăng nhập và mật khẩu."));
+        }
+
+        string username = request.Username.Trim();
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => 
+            u.Username == username || u.PhoneNumber == username);
+
+        if (user == null)
+        {
+            return BadRequest(Result<AuthResponseDto>.Fail("Tên đăng nhập hoặc mật khẩu không chính xác."));
+        }
+
+        bool isValid = false;
+        if (!string.IsNullOrWhiteSpace(user.PasswordHash))
+        {
+            isValid = PasswordHelper.VerifyPassword(request.Password, user.PasswordHash);
+        }
+        else
+        {
+            // Tài khoản cũ hoặc tạo trước khi có password: hỗ trợ mật khẩu 123456
+            isValid = request.Password == "123456";
+        }
+
+        if (!isValid)
+        {
+            return BadRequest(Result<AuthResponseDto>.Fail("Tên đăng nhập hoặc mật khẩu không chính xác."));
+        }
+
+        string token = _tokenGenerator.GenerateToken(user);
+        var dto = new AuthResponseDto
+        {
+            Token = token,
+            User = new UserAccountDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                PhoneNumber = user.PhoneNumber,
+                FullName = user.FullName,
+                Role = user.Role,
+                IsVip = user.IsVip && (!user.VipExpireAt.HasValue || user.VipExpireAt > DateTime.UtcNow),
+                VipExpireAt = user.VipExpireAt
+            }
+        };
+
+        return Ok(Result<AuthResponseDto>.Ok(dto, "Đăng nhập thành công!"));
+    }
+
+    /// <summary>
+    /// Đăng ký tài khoản mới bằng Tên đăng nhập và Mật khẩu
+    /// </summary>
+    [HttpPost("register")]
+    public async Task<ActionResult<Result<AuthResponseDto>>> Register([FromBody] RegisterRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Username))
+        {
+            return BadRequest(Result<AuthResponseDto>.Fail("Tên đăng nhập không được để trống."));
+        }
+
+        string username = request.Username.Trim();
+        if (username.Length < 3)
+        {
+            return BadRequest(Result<AuthResponseDto>.Fail("Tên đăng nhập phải có ít nhất 3 ký tự."));
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 6)
+        {
+            return BadRequest(Result<AuthResponseDto>.Fail("Mật khẩu phải có ít nhất 6 ký tự."));
+        }
+
+        bool exists = await _dbContext.Users.AnyAsync(u => u.Username == username);
+        if (exists)
+        {
+            return BadRequest(Result<AuthResponseDto>.Fail("Tên đăng nhập này đã được sử dụng."));
+        }
+
+        string phone = !string.IsNullOrWhiteSpace(request.PhoneNumber)
+            ? request.PhoneNumber.Trim().Replace(" ", "")
+            : username;
+
+        var user = new UserAccount
+        {
+            Username = username,
+            PasswordHash = PasswordHelper.HashPassword(request.Password),
+            PhoneNumber = phone,
+            FullName = !string.IsNullOrWhiteSpace(request.FullName) ? request.FullName.Trim() : username,
+            Role = "User",
+            IsVip = false,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _dbContext.Users.Add(user);
+        await _dbContext.SaveChangesAsync();
+
+        string token = _tokenGenerator.GenerateToken(user);
+        var dto = new AuthResponseDto
+        {
+            Token = token,
+            User = new UserAccountDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                PhoneNumber = user.PhoneNumber,
+                FullName = user.FullName,
+                Role = user.Role,
+                IsVip = false,
+                VipExpireAt = null
+            }
+        };
+
+        return Ok(Result<AuthResponseDto>.Ok(dto, "Đăng ký tài khoản thành công!"));
     }
 
     /// <summary>

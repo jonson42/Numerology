@@ -3,6 +3,20 @@ using Numerology.Domain.ValueObjects;
 
 namespace Numerology.Application.Features.Dtos;
 
+public class LoginRequest
+{
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
+
+public class RegisterRequest
+{
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public string? FullName { get; set; }
+    public string? PhoneNumber { get; set; }
+}
+
 public class LoginPhoneRequest
 {
     public string PhoneNumber { get; set; } = string.Empty;
@@ -18,6 +32,7 @@ public class VerifyOtpRequest
 public class UserAccountDto
 {
     public Guid Id { get; set; }
+    public string Username { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public string? FullName { get; set; }
     public string Role { get; set; } = "User";
