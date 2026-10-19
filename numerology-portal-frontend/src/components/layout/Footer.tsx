@@ -21,8 +21,8 @@ export const Footer: React.FC = () => {
             <p className="text-xs text-slate-400 leading-relaxed">
               Cổng thông tin tra cứu thần số học Pythagoras, trắc nghiệm tâm lý DISC, MBTI và chiêm tinh học toàn diện hàng đầu.
             </p>
-            <p className="text-[11px] text-purple-300/80 italic font-serif">
-              "Con số cai trị cả vũ trụ và tiết lộ bản thiết kế của linh hồn." — Pythagoras
+            <p className="text-xs text-purple-200/85 italic font-serif leading-relaxed tracking-wide">
+              &ldquo;Con số cai trị cả vũ trụ và tiết lộ bản thiết kế của linh hồn.&rdquo; — Pythagoras
             </p>
           </div>
 

@@ -6,6 +6,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Playfair Display', 'Plus Jakarta Sans', 'Georgia', 'serif'],
+        cinzel: ['Playfair Display', 'Plus Jakarta Sans', 'Georgia', 'serif'],
+      },
       colors: {
         cosmic: {
           950: '#070514',
