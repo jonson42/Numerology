@@ -16,10 +16,10 @@ public class VietQrService : IVietQrService
 
     public VietQrPaymentInfo GeneratePaymentInfo(TransactionOrder order)
     {
-        string bankCode = _configuration["Payment:VietQr:BankCode"] ?? "MB";
-        string bankName = _configuration["Payment:VietQr:BankName"] ?? "Ngân hàng Quân Đội (MBBank)";
-        string accountNumber = _configuration["Payment:VietQr:AccountNumber"] ?? "0901234567";
-        string accountName = _configuration["Payment:VietQr:AccountName"] ?? "CONG TY CONG NGHE TRA CUU";
+        string bankCode = _configuration["Payment:VietQr:BankCode"] ?? "970423";
+        string bankName = _configuration["Payment:VietQr:BankName"] ?? "Ngân hàng Tiên Phong (TPBank)";
+        string accountNumber = _configuration["Payment:VietQr:AccountNumber"] ?? "56904021993";
+        string accountName = _configuration["Payment:VietQr:AccountName"] ?? "TrinhQuocNghiem";
 
         // Tạo nội dung chuyển khoản chuẩn theo OrderCode
         string transferContent = order.TransferContent;

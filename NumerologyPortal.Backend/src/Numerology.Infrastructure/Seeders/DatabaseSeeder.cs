@@ -43,10 +43,10 @@ public static class DatabaseSeeder
         if (!await context.SystemSettings.AnyAsync())
         {
             context.SystemSettings.AddRange(
-                new SystemSetting { Key = "VietQr:BankCode", Value = "MB", Description = "Mã ngân hàng nhận thanh toán VietQR" },
-                new SystemSetting { Key = "VietQr:BankName", Value = "Ngân hàng Quân Đội (MBBank)", Description = "Tên ngân hàng" },
-                new SystemSetting { Key = "VietQr:AccountNumber", Value = "0901234567", Description = "Số tài khoản ngân hàng thụ hưởng" },
-                new SystemSetting { Key = "VietQr:AccountName", Value = "CONG TY CONG NGHE TRA CUU", Description = "Tên chủ tài khoản" },
+                new SystemSetting { Key = "VietQr:BankCode", Value = "970423", Description = "Mã ngân hàng nhận thanh toán VietQR" },
+                new SystemSetting { Key = "VietQr:BankName", Value = "Ngân hàng Tiên Phong (TPBank)", Description = "Tên ngân hàng" },
+                new SystemSetting { Key = "VietQr:AccountNumber", Value = "56904021993", Description = "Số tài khoản ngân hàng thụ hưởng" },
+                new SystemSetting { Key = "VietQr:AccountName", Value = "TrinhQuocNghiem", Description = "Tên chủ tài khoản" },
                 new SystemSetting { Key = "Price:Vip1Year", Value = "199000", Description = "Giá gói VIP 1 năm (VND)" },
                 new SystemSetting { Key = "Price:VipLifetime", Value = "399000", Description = "Giá gói VIP trọn đời (VND)" }
             );

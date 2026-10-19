@@ -4,7 +4,6 @@ import { reportApi } from '../api/reportApi';
 import { BirthAndNameGrid3x3 } from '../components/charts/BirthAndNameGrid3x3';
 import { NumerologyPyramidSvg } from '../components/charts/NumerologyPyramidSvg';
 import { LifeCycleWaveChart } from '../components/charts/LifeCycleWaveChart';
-import { AudioPlayerCard } from '../components/common/AudioPlayerCard';
 import { VipLockedOverlay } from '../components/paywall/VipLockedOverlay';
 import {
   Sparkles,
@@ -180,11 +179,6 @@ export const ReportViewPage: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Trình phát Audio Thuyết Minh */}
-      <AudioPlayerCard
-        lifePathNumber={metrics.lifePathNumber}
-        fullName={fullName}
-      />
 
       {/* 3 Biểu Đồ Trực Quan Chuyên Sâu */}
       <div className="space-y-8">

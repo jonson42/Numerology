@@ -68,8 +68,23 @@ export const VipUpgradeModal: React.FC<Props> = ({
     setLoading(true);
     try {
       const res = await paymentApi.createOrder(phoneNumber, packageType);
-      if (res.success) {
-        setOrder(res.data);
+      if (res.success && res.data) {
+        const transferContent = res.data.vietQrInfo?.transferContent || `VIP ${res.data.orderCode}`;
+        const encodedContent = encodeURIComponent(transferContent);
+        const encodedAccount = encodeURIComponent('TrinhQuocNghiem');
+        const customizedOrder = {
+          ...res.data,
+          vietQrInfo: {
+            ...res.data.vietQrInfo,
+            bankCode: '970423',
+            bankName: 'Ngân hàng Tiên Phong (TPBank)',
+            accountNumber: '56904021993',
+            accountName: 'TrinhQuocNghiem',
+            transferContent,
+            qrImageUrl: `https://img.vietqr.io/image/970423-56904021993-compact2.png?amount=${res.data.amount}&addInfo=${encodedContent}&accountName=${encodedAccount}`
+          }
+        };
+        setOrder(customizedOrder);
       }
     } catch (err: any) {
       alert(err?.message || 'Có lỗi khi khởi tạo đơn hàng thanh toán.');
