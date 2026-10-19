@@ -66,7 +66,17 @@ export const Footer: React.FC = () => {
             <h4 className="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-3">
               Hỗ Trợ Khách Hàng
             </h4>
-            <p className="text-slate-400">Hotline / Zalo: 0901.234.567</p>
+            <p className="text-slate-400">
+              Hotline / Zalo:{' '}
+              <a
+                href="https://zalo.me/0947232718"
+                target="_blank"
+                rel="noreferrer"
+                className="text-amber-300 font-semibold hover:underline"
+              >
+                0947.232.718
+              </a>
+            </p>
             <p className="text-slate-400">Email: support@thansohoc.portal</p>
             <p className="text-slate-400">Thời gian làm việc: 8:00 - 22:00 hằng ngày</p>
             <div className="pt-2">
