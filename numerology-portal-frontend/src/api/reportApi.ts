@@ -1,4 +1,4 @@
-import axiosClient from './axiosClient';
+import axiosClient, { getApiBaseUrl } from './axiosClient';
 import type { LookupReportDto } from '../types/report.types';
 
 export interface CreateReportPayload {
@@ -19,7 +19,7 @@ export const reportApi = {
   },
 
   getPdfUrl: (token: string): string => {
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const base = getApiBaseUrl();
     return `${base}/reports/${token}/pdf`;
   }
 };

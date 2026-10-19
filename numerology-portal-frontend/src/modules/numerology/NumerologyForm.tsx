@@ -34,7 +34,8 @@ export const NumerologyForm: React.FC<Props> = ({ onReportGenerated, isKidMode =
         onReportGenerated(res.data);
       }
     } catch (err: any) {
-      alert(err?.message || 'Có lỗi xảy ra khi tạo báo cáo tra cứu.');
+      const msg = err?.message || (typeof err === 'string' ? err : 'Có lỗi xảy ra khi tạo báo cáo tra cứu.');
+      alert(msg);
     } finally {
       setLoading(false);
     }

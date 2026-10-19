@@ -4,6 +4,9 @@ obj/
 *.db
 *.db-shm
 *.db-wal
+.vs/
+*.vs/
+*.pubxml.user
 
 # Node / Frontend
 node_modules/
