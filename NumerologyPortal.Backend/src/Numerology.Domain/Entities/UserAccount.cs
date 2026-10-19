@@ -3,7 +3,7 @@ namespace Numerology.Domain.Entities;
 public class UserAccount
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public string Username { get; set; } = string.Empty;
+    public string? Username { get; set; }
     public string? PasswordHash { get; set; }
     public string PhoneNumber { get; set; } = string.Empty;
     public string? FullName { get; set; }

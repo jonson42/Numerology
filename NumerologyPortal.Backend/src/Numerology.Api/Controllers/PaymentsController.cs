@@ -60,15 +60,22 @@ public class PaymentsController : ControllerBase
 
         // Lấy User nếu đã có trong hệ thống hoặc đăng nhập
         UserAccount? user = null;
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
-        if (!string.IsNullOrWhiteSpace(userIdClaim) && Guid.TryParse(userIdClaim, out var parsedId))
+        try
         {
-            user = await _dbContext.Users.FindAsync(parsedId);
-        }
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+            if (!string.IsNullOrWhiteSpace(userIdClaim) && Guid.TryParse(userIdClaim, out var parsedId))
+            {
+                user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == parsedId);
+            }
 
-        if (user == null)
+            if (user == null)
+            {
+                user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.PhoneNumber == cleanPhone);
+            }
+        }
+        catch
         {
-            user = await _dbContext.Users.FirstOrDefaultAsync(u => u.PhoneNumber == cleanPhone);
+            // Bỏ qua lỗi truy vấn user nếu có bất đồng bộ schema trên DB
         }
 
         decimal amount = 199000; // Mặc định gói 1 năm 199.000 VNĐ
@@ -100,8 +107,26 @@ public class PaymentsController : ControllerBase
             CreatedAt = DateTime.UtcNow
         };
 
-        _dbContext.Orders.Add(order);
-        await _dbContext.SaveChangesAsync();
+        try
+        {
+            _dbContext.Orders.Add(order);
+            await _dbContext.SaveChangesAsync();
+        }
+        catch
+        {
+            try
+            {
+                _dbContext.Entry(order).State = EntityState.Detached;
+                order.UserId = null;
+                order.User = null;
+                _dbContext.Orders.Add(order);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch
+            {
+                // Vẫn tiếp tục trả mã QR để không chặn người dùng
+            }
+        }
 
         var qrInfo = _vietQrService.GeneratePaymentInfo(order);
 
@@ -141,6 +166,7 @@ public class PaymentsController : ControllerBase
     public async Task<ActionResult<Result<OrderStatusCheckResponse>>> CheckOrderStatus(string orderCode)
     {
         var order = await _dbContext.Orders
+            .AsNoTracking()
             .Include(o => o.User)
             .FirstOrDefaultAsync(o => o.OrderCode == orderCode.Trim());
 

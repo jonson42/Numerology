@@ -16,6 +16,7 @@ public static class DatabaseSeeder
         // Tự động bổ sung cột Username và PasswordHash nếu dùng DB cũ chưa có migration
         try { await context.Database.ExecuteSqlRawAsync("ALTER TABLE Users ADD COLUMN Username TEXT;"); } catch { }
         try { await context.Database.ExecuteSqlRawAsync("ALTER TABLE Users ADD COLUMN PasswordHash TEXT;"); } catch { }
+        try { await context.Database.ExecuteSqlRawAsync("UPDATE Users SET Username = PhoneNumber WHERE Username IS NULL OR Username = '';"); } catch { }
 
         // 1. Seed Users
         if (!await context.Users.AnyAsync())

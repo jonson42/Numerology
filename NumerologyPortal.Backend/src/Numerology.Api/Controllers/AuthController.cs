@@ -68,7 +68,7 @@ public class AuthController : ControllerBase
             User = new UserAccountDto
             {
                 Id = user.Id,
-                Username = user.Username,
+                Username = user.Username ?? user.PhoneNumber ?? string.Empty,
                 PhoneNumber = user.PhoneNumber,
                 FullName = user.FullName,
                 Role = user.Role,
@@ -133,7 +133,7 @@ public class AuthController : ControllerBase
             User = new UserAccountDto
             {
                 Id = user.Id,
-                Username = user.Username,
+                Username = user.Username ?? user.PhoneNumber ?? string.Empty,
                 PhoneNumber = user.PhoneNumber,
                 FullName = user.FullName,
                 Role = user.Role,
@@ -223,6 +223,7 @@ public class AuthController : ControllerBase
             User = new UserAccountDto
             {
                 Id = user.Id,
+                Username = user.Username ?? user.PhoneNumber ?? string.Empty,
                 PhoneNumber = user.PhoneNumber,
                 FullName = user.FullName,
                 Role = user.Role,
@@ -256,6 +257,7 @@ public class AuthController : ControllerBase
         var dto = new UserAccountDto
         {
             Id = user.Id,
+            Username = user.Username ?? user.PhoneNumber ?? string.Empty,
             PhoneNumber = user.PhoneNumber,
             FullName = user.FullName,
             Role = user.Role,

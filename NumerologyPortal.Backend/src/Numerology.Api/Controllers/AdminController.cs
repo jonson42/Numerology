@@ -130,6 +130,7 @@ public class AdminController : ControllerBase
     public async Task<ActionResult<Result<List<UserAccount>>>> GetUsers()
     {
         var users = await _dbContext.Users
+            .AsNoTracking()
             .OrderByDescending(u => u.CreatedAt)
             .Take(50)
             .ToListAsync();
