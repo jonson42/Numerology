@@ -79,8 +79,8 @@ export const Footer: React.FC = () => {
 
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} Cổng Thông Tin Tra Cứu Thần Số Học & Trắc Nghiệm Tâm Lý. All rights reserved.</p>
-          <p className="flex items-center gap-1">
-            Xây dựng với công nghệ <Heart className="w-3.5 h-3.5 text-rose-500 fill-current" /> .NET 8 Clean Architecture & React
+          <p className="flex items-center gap-1.5 text-slate-400">
+            Được xây dựng bởi Master <span className="font-semibold text-amber-300">Trịnh Quốc Nghiêm</span> <Heart className="w-3.5 h-3.5 text-rose-500 fill-current inline-block" />
           </p>
         </div>
       </div>
